@@ -21,22 +21,6 @@ client = TelegramClient(
     session_name, int(environ['TG_API_ID']), environ['TG_API_HASH'],
     proxy=None, update_workers=4, spawn_read_thread=False
 )
-print('INFO: Connecting to Telegram Servers...', end='', flush=True)
-client.connect()
-print('Done!')
-
-if not client.is_user_authorized():
-    print('INFO: Unauthorized user')
-    client.send_code_request(user_phone)
-    code_ok = False
-    while not code_ok:
-        code = input('Enter the auth code: ')
-        try:
-            code_ok = client.sign_in(user_phone, code)
-        except SessionPasswordNeededError:
-            password = getpass('Two step verification enabled. '
-                               'Please enter your password: ')
-            code_ok = client.sign_in(password=password)
 
 client.start()
 
